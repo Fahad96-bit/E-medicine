@@ -1,0 +1,63 @@
+{
+  "products":[{
+    "id":1,
+    "title":"Panadol",
+    "price":128,
+    "image":"https://i-cf65.ch-static.com/content/dam/cf-consumer-healthcare/panadol/en_ie/ireland-products/panadol-tablets/MGK5158-GSK-Panadol-Tablets-455x455.png?auto=format"
+},
+{
+  "id":2,
+  "title":"Amoxil 500mg",
+  "price":18,
+  "image":"https://products.dawaai.pk/800/gskamo43573_1.webp"
+},
+{
+  "id":3,
+  "title":"Nutrifactor",
+  "price":200,
+  "image":"https://cdn.shopify.com/s/files/1/0310/5472/5260/products/SleepWell_1024x1024.png?v=1666953204"
+},
+{
+  "id":4,
+  "title":"Telfast 120mg",
+  "price":250,
+  "image":"https://www.telfast.com/dam/jcr:5e684a80-3e87-4fda-8300-8423ad32cd99/Telfast_120.png"
+},
+{
+  "id":5,
+  "title":"Risek 40",
+  "price":128,
+  "image":"https://medicalstore.com.pk/wp-content/uploads/2019/02/Medicalstore.com_.pk-Risek-40mg-Cap-256x256.png"
+},
+{
+  "id":6,
+  "title":"Ruling 20",
+  "price":128,
+  "image":"https://products.dawaai.pk/800/higrul23415_1.webp"
+},
+{
+  "id":7,
+  "title":"Arbi D",
+  "price":122,
+  "image":"https://medicalstore.com.pk/wp-content/uploads/2020/05/18141ARBI-D-12.5MG.png"
+},
+{
+  "id":8,
+  "title":"Diclofenac DHG",
+  "price":24,
+  "image":"https://vinmec-prod.s3.amazonaws.com/images/20220116_031443_055235_diclofenac-1.max-1800x1800.png"
+},
+{
+  "id":9,
+  "title":"Admit 100",
+  "price":300,
+  "image":"https://shaigan.com/wp-content/uploads/2019/05/ADMIT-100-8.35.png"
+},
+{
+  "id":10,
+  "title":"Evopride",
+  "price":77,
+  "image":"https://medicalstore.com.pk/wp-content/uploads/2020/05/18058EVOPRIDE-PLUS-2MG-500MG-256x256.png"
+}
+]
+}
