@@ -2,16 +2,40 @@ import React, {useEffect, useState} from 'react';
 import productData from '../mock/products.json';
 import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import LinearGradient from 'react-native-linear-gradient';
 import Card from '../components/Card';
+import auth from '@react-native-firebase/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
   useEffect(() => {
     setProducts(productData.products);
   }, []);
 
+  const signOut = async () => {
+    try {
+      await GoogleSignin.signOut();
+
+      auth()
+        .signOut()
+        .then(() => dispatch({type: 'SET_AUTH', authState: false}));
+      showMessage({
+        message: 'User logout successfully',
+        type: 'success',
+      });
+    } catch (e) {
+      console.log('signoutErr', e);
+    }
+  };
   return (
     <LinearGradient
       colors={['#f7f3fb', '#e8ddf2']}
@@ -20,15 +44,14 @@ const Home = () => {
         <View style={styles.productHeader}>
           <Entypo style={styles.icon} name="menu" />
           <Text style={styles.productText}>Products</Text>
-          <EvilIcons style={styles.icon} name="cart" />
+          <MaterialIcons onPress={signOut} style={styles.icon} name="logout" />
         </View>
         <View style={styles.listContainer}>
           <FlatList
-            key={'#'}
             numColumns={2}
             data={products}
             renderItem={itemData => {
-              return <Card product={itemData.item} />;
+              return <Card product={itemData.item} navigation={navigation} />;
             }}
             keyExtractor={(item, index) => {
               return item.id;

@@ -1,9 +1,10 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, Text, View, Image,TouchableOpacity} from 'react-native';
 
-const Card = ({product}) => {
+const Card = ({product,navigation}) => {
   return (
-    <View style={styles.card}>
+    <TouchableOpacity style={styles.card} onPress={()=> navigation.navigate('ProductDetail',{productId:product.id})}>
+    <View>
       <View style={styles.imgContainer}>
         <Image
           style={styles.tinyLogo}
@@ -18,6 +19,7 @@ const Card = ({product}) => {
         <Text style={styles.productPrice}>Rs. {product.price}</Text>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({

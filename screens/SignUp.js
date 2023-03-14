@@ -4,6 +4,8 @@ import {emailRegex, passwordRegex, baseUrl} from '../scripts/constants';
 import axios from 'axios';
 import {showMessage} from 'react-native-flash-message';
 import LinearGradient from 'react-native-linear-gradient';
+import {googleSignIn, fbSignIn} from '../utils/socialAuth';
+import auth from '@react-native-firebase/auth';
 
 const SignUp = ({navigation}) => {
   const [signUpForm, setSignUpForm] = useState([
@@ -87,7 +89,6 @@ const SignUp = ({navigation}) => {
   const validateOnSubmit = () => {
     let isValid = true;
     const ValidateArray = signUpForm.map(textField => {
-      console.log('isValid', isValid);
       if (textField.value === '') {
         isValid = false;
         const {name} = textField;
@@ -100,11 +101,9 @@ const SignUp = ({navigation}) => {
           isValid: false,
         };
       }
-      debugger
       !isValid ? null : (isValid = textField.isValid);
       return textField;
     });
-    console.log('array', ValidateArray);
     setSignUpForm(ValidateArray);
 
     return isValid;
@@ -119,21 +118,18 @@ const SignUp = ({navigation}) => {
         userData[name] = value;
       });
       try {
-        const res = await axios.post(baseUrl + 'auth/register', userData);
+        // const res = await axios.post(baseUrl + 'auth/register', userData);
+        await auth().createUserWithEmailAndPassword(
+          userData.email,
+          userData.password,
+        );
         showMessage({
           message: 'User registered successfully',
           type: 'success',
         });
-        navigation.navigate('SignIn');
       } catch (e) {
-        const {
-          response: {
-            data: {message},
-          },
-        } = e;
-        console.log('e', e);
         showMessage({
-          message: message,
+          message: e.message,
           type: 'danger',
         });
       }
@@ -165,14 +161,10 @@ const SignUp = ({navigation}) => {
               <Text style={styles.text}>Sign up</Text>
             </Pressable>
             <View style={styles.otherButtons}>
-              <Pressable
-                style={styles.btn}
-                onPress={() => alert('Hello! I am an alert box!')}>
+              <Pressable style={styles.btn} onPress={fbSignIn}>
                 <Text style={styles.textOtherBtn}>Facebook</Text>
               </Pressable>
-              <Pressable
-                style={styles.btn}
-                onPress={() => alert('Hello! I am an alert box!')}>
+              <Pressable style={styles.btn} onPress={googleSignIn}>
                 <Text style={styles.textOtherBtn}>Google</Text>
               </Pressable>
             </View>

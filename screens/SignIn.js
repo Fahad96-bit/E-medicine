@@ -4,8 +4,33 @@ import {emailRegex, passwordRegex, baseUrl} from '../scripts/constants';
 import axios from 'axios';
 import {showMessage} from 'react-native-flash-message';
 import LinearGradient from 'react-native-linear-gradient';
+import {useEffect} from 'react';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {googleSignIn, fbSignIn} from '../utils/socialAuth';
 
 const SignIn = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '838524686178-0qp7e864vesv4p9mo2im540mhgpph59r.apps.googleusercontent.com',
+    });
+    // const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    // return subscriber;
+  }, []);
+  // function onAuthStateChanged(user) {
+  //   if (user) {
+  //     console.log('user', user);
+  //     dispatch({type: 'SET_AUTH', authState: !!user});
+  //   }
+  // }
+
   const [loginForm, setLoginForm] = useState([
     {
       label: 'Email',
@@ -53,7 +78,6 @@ const SignIn = ({navigation}) => {
   const validateOnSubmit = () => {
     let isValid = true;
     const ValidateArray = loginForm.map(textField => {
-      console.log('isValid', isValid);
       if (textField.value === '') {
         isValid = false;
         const {name} = textField;
@@ -69,7 +93,6 @@ const SignIn = ({navigation}) => {
       !isValid ? null : (isValid = textField.isValid);
       return textField;
     });
-    console.log('array', ValidateArray);
     setLoginForm(ValidateArray);
 
     return isValid;
@@ -77,27 +100,28 @@ const SignIn = ({navigation}) => {
 
   const loginClickHandler = async () => {
     if (validateOnSubmit()) {
-      console.log('allVlid');
       const userData = {};
       loginForm.map(({name, value}) => {
         userData[name] = value;
       });
       try {
-        const res = await axios.post(baseUrl + 'auth/login', userData);
-        showMessage({
-          message: 'User login successfully',
-          type: 'success',
-        });
-        navigation.navigate('Home');
+        // const res = await axios.post(baseUrl + 'auth/login', userData);
+        await auth().signInWithEmailAndPassword(
+          userData.email,
+          userData.password,
+        );
+        // showMessage({
+        //   message: 'User login successfully',
+        //   type: 'success',
+        // });
       } catch (e) {
-        const {
-          response: {
-            data: {message},
-          },
-        } = e;
-        console.log('e', e);
+        // const {
+        //   response: {
+        //     data: {message},
+        //   },
+        // } = e;
         showMessage({
-          message: message,
+          message: e.message,
           type: 'danger',
         });
       }
@@ -131,14 +155,10 @@ const SignIn = ({navigation}) => {
               <Text style={styles.text}>Sign in</Text>
             </Pressable>
             <View style={styles.otherButtons}>
-              <Pressable
-                style={styles.btn}
-                onPress={() => alert('Hello! I am an alert box!')}>
+              <Pressable style={styles.btn} onPress={fbSignIn}>
                 <Text style={styles.textOtherBtn}>Facebook</Text>
               </Pressable>
-              <Pressable
-                style={styles.btn}
-                onPress={() => alert('Hello! I am an alert box!')}>
+              <Pressable style={styles.btn} onPress={googleSignIn}>
                 <Text style={styles.textOtherBtn}>Google</Text>
               </Pressable>
             </View>
